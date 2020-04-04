@@ -1,17 +1,17 @@
 package main
 import "fmt"
 
-// 2020.3.31 归并排序
-func sortArray(nums []int) []int {
-    if len(nums) == 0 || len(nums) == 1 { return nums }
-    l, r := 0, len(nums)-1
-    mid := l + (r - l) / 2
-    return merge(sortArray(nums[:mid]), sortArray(nums[mid:]))
+func sortArray(arr []int) []int {
+    if len(arr) < 2 {
+        return arr
+    }
+    i := len(arr) / 2
+    // left := sortArray(arr[0:i])
+    // right := sortArray(arr[i:])
+    // result := merge(left, right)
+    return merge(sortArray(arr[0:i]), sortArray(arr[i:]))
 }
-// 合并两个有序数组
 func merge(nums1, nums2 []int) []int {
-    if len(nums1) == 0 { return nums2 }
-    if len(nums2) == 0 { return nums1 }
     res := make([]int, 0)
     i, j := 0, 0
     for i < len(nums1) && j < len(nums2) {
@@ -19,15 +19,15 @@ func merge(nums1, nums2 []int) []int {
             res = append(res, nums1[i])
             i++
         } else {
-            res = append(res, nums1[i])
+            res = append(res, nums2[i])
             j++
         }
     }
-    for ; i < len(nums1); i++ {
-        res = append(res, nums1[i])
+    if i < len(nums1) {
+        res = append(res, nums1[i:]...)
     }
-    for ; j < len(nums2); j++ {
-        res = append(res, nums2[j])
+    if j < len(nums2) {
+        res = append(res, nums2[j:]...)
     }
     return res
 }
